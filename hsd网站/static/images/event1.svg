@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="400" height="250">
+  <defs>
+    <linearGradient id="eventGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#007bff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0056b3;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="400" height="250" fill="url(#eventGradient1)" />
+  
+  <!-- 装饰性图形 -->
+  <circle cx="350" cy="50" r="30" fill="rgba(255,255,255,0.1)" />
+  <circle cx="50" cy="200" r="40" fill="rgba(255,255,255,0.1)" />
+  
+  <!-- 主要图标 -->
+  <g transform="translate(200, 125)">
+    <circle cx="0" cy="0" r="50" fill="rgba(255,255,255,0.2)" />
+    <text x="0" y="15" font-family="FontAwesome" font-size="40" fill="white" text-anchor="middle">👥</text>
+  </g>
+  
+  <!-- 标题文字 -->
+  <text x="200" y="220" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">
+    开发者大会
+  </text>
+</svg>

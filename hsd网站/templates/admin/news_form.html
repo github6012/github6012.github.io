@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ '编辑新闻' if news else '创建新闻' }} - 管理员后台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .main-content {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        .required {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <!-- 统一侧边栏 -->
+    {% include 'admin/sidebar.html' %}
+
+             <!-- 主内容区域 -->
+             <div class="main-content">
+                <div class="main-content p-4">
+                    <!-- 顶部导航 -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h2 class="mb-0">{{ '编辑新闻' if news else '创建新闻' }}</h2>
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="{{ url_for('admin_dashboard') }}">仪表盘</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ url_for('admin_news') }}">新闻管理</a></li>
+                                    <li class="breadcrumb-item active">{{ '编辑新闻' if news else '创建新闻' }}</li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <a href="{{ url_for('admin_logout') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-box-arrow-right me-1"></i>退出登录
+                        </a>
+                    </div>
+
+                    <!-- 消息提示 -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <!-- 新闻表单 -->
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="mb-3">
+                                            <label for="title" class="form-label">新闻标题 <span class="required">*</span></label>
+                                            <input type="text" class="form-control" id="title" name="title" 
+                                                   value="{{ news.title if news else '' }}" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="content" class="form-label">新闻内容 <span class="required">*</span></label>
+                                            <textarea class="form-control" id="content" name="content" rows="10" required>{{ news.content if news else '' }}</textarea>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="category" class="form-label">新闻分类 <span class="required">*</span></label>
+                                            <select class="form-select" id="category" name="category" required>
+                                                <option value="">请选择分类</option>
+                                                <option value="学术" {{ 'selected' if news and news.category == '学术' else '' }}>学术</option>
+                                                <option value="活动" {{ 'selected' if news and news.category == '活动' else '' }}>活动</option>
+                                                <option value="通知" {{ 'selected' if news and news.category == '通知' else '' }}>通知</option>
+                                                <option value="其他" {{ 'selected' if news and news.category == '其他' else '' }}>其他</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="image" class="form-label">上传图片 (JPG/PNG)</label>
+                                            <input type="file" class="form-control" id="image" name="image" accept=".jpg,.jpeg,.png">
+                                            {% if news and news.image_url %}
+                                                <div class="mt-2">
+                                                    <p class="text-sm text-muted">当前图片：</p>
+                                                    <img src="{{ news.image_url }}" alt="当前图片" class="mt-1" style="height: 80px; width: 80px; object-fit: cover; border-radius: 4px;">
+                                                </div>
+                                            {% endif %}
+                                            <div class="form-text">可选，用于新闻封面图片</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="card bg-light">
+                                            <div class="card-header">
+                                                <h6 class="mb-0">发布设置</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="is_published" name="is_published" 
+                                                           {{ 'checked' if news and news.is_published else '' }}>
+                                                    <label class="form-check-label" for="is_published">
+                                                        立即发布
+                                                    </label>
+                                                </div>
+                                                <div class="form-text">
+                                                    不勾选则保存为草稿
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {% if news %}
+                                        <div class="card bg-light mt-3">
+                                            <div class="card-header">
+                                                <h6 class="mb-0">新闻信息</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="mb-1"><strong>创建时间：</strong></p>
+                                                <p class="text-muted small">{{ news.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                                                
+                                                <p class="mb-1"><strong>当前状态：</strong></p>
+                                                <p class="mb-0">
+                                                    {% if news.is_published %}
+                                                        <span class="badge bg-success">已发布</span>
+                                                    {% else %}
+                                                        <span class="badge bg-warning">草稿</span>
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-4">
+                                    <a href="{{ url_for('admin_news') }}" class="btn btn-secondary">
+                                        <i class="bi bi-arrow-left me-1"></i>返回列表
+                                    </a>
+                                    <div>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="bi bi-check-circle me-1"></i>{{ '更新新闻' if news else '创建新闻' }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 表单验证
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const title = document.getElementById('title').value.trim();
+            const content = document.getElementById('content').value.trim();
+            const category = document.getElementById('category').value;
+            
+            if (!title || !content || !category) {
+                e.preventDefault();
+                alert('请填写所有必填字段！');
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,409 @@
+{% extends "base.html" %}
+
+{% block title %}学生展示 - QHSF-HSD 校园开发者联盟{% endblock %}
+
+{% block content %}
+<!-- 页面标题 -->
+<section class="py-5 bg-gradient-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-5 fw-bold mb-3">优秀学员展示</h1>
+                <p class="lead">认识我们的优秀学员，了解他们的成长故事</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 统计数据 -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 col-6 mb-3">
+                <div class="stat-item">
+                    <h4 class="fw-bold text-primary mb-1" id="studentsCount">0</h4>
+                    <p class="text-muted mb-0">注册学员</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="stat-item">
+                    <h4 class="fw-bold text-success mb-1" id="universitiesCount">0</h4>
+                    <p class="text-muted mb-0">合作高校</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="stat-item">
+                    <h4 class="fw-bold text-info mb-1">30+</h4>
+                    <p class="text-muted mb-0">技术方向</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="stat-item">
+                    <h4 class="fw-bold text-warning mb-1">95%</h4>
+                    <p class="text-muted mb-0">就业率</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 学员列表 -->
+<section class="py-5">
+    <div class="container">
+        {% if students %}
+        <div class="row g-4">
+            {% for student in students %}
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm student-card">
+                    <div class="card-body text-center p-4">
+                        <!-- 头像 -->
+                        <div class="student-avatar mx-auto mb-3">
+                            {% if student.avatar_url %}
+                            <img src="{{ student.avatar_url }}" alt="{{ student.name }}" class="rounded-circle" width="80" height="80">
+                            {% else %}
+                            <div class="avatar-placeholder bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                <i class="fas fa-user fa-2x"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- 基本信息 -->
+                        <h5 class="card-title fw-bold mb-2">{{ student.name }}</h5>
+                        <p class="text-muted mb-2">
+                            <i class="fas fa-university me-1"></i>
+                            {{ student.university }}
+                        </p>
+                        <p class="text-muted mb-3">
+                            <i class="fas fa-graduation-cap me-1"></i>
+                            {{ student.major }}
+                        </p>
+                        
+                        <!-- 个人简介 -->
+                        {% if student.bio %}
+                        <p class="card-text text-muted small mb-3">{{ student.bio[:80] }}{% if student.bio|length > 80 %}...{% endif %}</p>
+                        {% endif %}
+                        
+                        <!-- 加入时间 -->
+                        <div class="student-meta">
+                            <small class="text-muted">
+                                <i class="fas fa-calendar me-1"></i>
+                                {{ student.join_date.strftime('%Y年%m月') }} 加入
+                            </small>
+                        </div>
+                        
+                        <!-- 联系方式 -->
+                        <div class="student-contact mt-3">
+                            {% if student.email %}
+                            <a href="mailto:{{ student.email }}" class="btn btn-outline-primary btn-sm me-2" title="发送邮件">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            {% endif %}
+                            {% if student.phone %}
+                            <a href="tel:{{ student.phone }}" class="btn btn-outline-success btn-sm" title="拨打电话">
+                                <i class="fas fa-phone"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- 加载更多 -->
+        {% if students|length >= 12 %}
+        <div class="text-center mt-5">
+            <button class="btn btn-outline-primary btn-lg" id="loadMoreBtn">
+                <i class="fas fa-plus me-2"></i>加载更多
+            </button>
+        </div>
+        {% endif %}
+        
+        {% else %}
+        <div class="row">
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-users fa-4x text-muted mb-3"></i>
+                <h4 class="text-muted">暂无学员信息</h4>
+                <p class="text-muted">快来成为我们的第一批学员吧！</p>
+                <a href="{{ url_for('join') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus me-2"></i>立即加入
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- 成功案例 -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="display-6 fw-bold mb-3">成功案例</h2>
+                <p class="lead text-muted">看看我们学员的精彩成就</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="success-icon bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <i class="fas fa-trophy fa-lg"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">全国编程大赛冠军</h5>
+                        <p class="text-muted">张同学在全国大学生编程竞赛中获得冠军，展现了扎实的编程功底。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="success-icon bg-success text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <i class="fas fa-rocket fa-lg"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">创业项目获投资</h5>
+                        <p class="text-muted">李同学的创业项目获得了500万天使轮投资，成功走向市场。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="success-icon bg-info text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                            <i class="fas fa-building fa-lg"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">知名企业offer</h5>
+                        <p class="text-muted">王同学收到了腾讯、阿里等多家知名企业的offer，成功就业。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 加入我们 -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3 class="fw-bold mb-3">想要成为下一个成功案例？</h3>
+                <p class="lead text-muted mb-4">加入QHSF-HSD，开启你的技术成长之旅</p>
+                <a href="{{ url_for('join') }}" class="btn btn-primary btn-lg px-5">
+                    <i class="fas fa-rocket me-2"></i>立即加入我们
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.student-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.student-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
+}
+
+.avatar-placeholder {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.student-contact .btn {
+    transition: transform 0.2s ease;
+}
+
+.student-contact .btn:hover {
+    transform: scale(1.1);
+}
+
+.success-icon {
+    transition: transform 0.3s ease;
+}
+
+.success-icon:hover {
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .stat-item h4 {
+        font-size: 1.5rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// 统计数据API加载
+function loadStatistics() {
+    fetch('/api/statistics')
+        .then(response => response.json())
+        .then(data => {
+            // 直接更新统计数据
+            document.getElementById('studentsCount').textContent = data.students_count + '+';
+            document.getElementById('universitiesCount').textContent = data.universities_count + '+';
+        })
+        .catch(error => {
+            console.error('加载统计数据失败:', error);
+            // 使用默认值
+            document.getElementById('studentsCount').textContent = '{{ students|length }}+';
+            document.getElementById('universitiesCount').textContent = '50+';
+        });
+}
+
+// 数字动画效果已移除
+
+// 加载更多功能
+let currentPage = 1;
+let isLoading = false;
+
+document.getElementById('loadMoreBtn')?.addEventListener('click', function() {
+    if (isLoading) return;
+    
+    isLoading = true;
+    this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>加载中...';
+    
+    fetch(`/api/students?page=${currentPage + 1}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.students && data.students.length > 0) {
+                appendStudents(data.students);
+                currentPage++;
+                
+                // 如果没有更多数据，隐藏按钮
+                if (!data.has_more) {
+                    this.style.display = 'none';
+                }
+            } else {
+                this.style.display = 'none';
+            }
+        })
+        .catch(error => {
+            console.error('加载更多学员失败:', error);
+            alert('加载失败，请稍后重试');
+        })
+        .finally(() => {
+            isLoading = false;
+            this.innerHTML = '<i class="fas fa-plus me-2"></i>加载更多';
+        });
+});
+
+// 添加学员卡片到页面
+function appendStudents(students) {
+    const container = document.querySelector('.row.g-4');
+    
+    students.forEach(student => {
+        const studentCard = createStudentCard(student);
+        container.appendChild(studentCard);
+        
+        // 添加动画效果
+        observer.observe(studentCard.querySelector('.student-card'));
+    });
+}
+
+// 创建学员卡片HTML
+function createStudentCard(student) {
+    const col = document.createElement('div');
+    col.className = 'col-lg-4 col-md-6';
+    
+    const avatarHtml = student.avatar_url 
+        ? `<img src="${student.avatar_url}" alt="${student.name}" class="rounded-circle" width="80" height="80">`
+        : `<div class="avatar-placeholder bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+               <i class="fas fa-user fa-2x"></i>
+           </div>`;
+    
+    const bioHtml = student.bio 
+        ? `<p class="card-text text-muted small mb-3">${student.bio.length > 80 ? student.bio.substring(0, 80) + '...' : student.bio}</p>`
+        : '';
+    
+    const emailHtml = student.email 
+        ? `<a href="mailto:${student.email}" class="btn btn-outline-primary btn-sm me-2" title="发送邮件">
+               <i class="fas fa-envelope"></i>
+           </a>`
+        : '';
+    
+    const phoneHtml = student.phone 
+        ? `<a href="tel:${student.phone}" class="btn btn-outline-success btn-sm" title="拨打电话">
+               <i class="fas fa-phone"></i>
+           </a>`
+        : '';
+    
+    col.innerHTML = `
+        <div class="card h-100 border-0 shadow-sm student-card">
+            <div class="card-body text-center p-4">
+                <div class="student-avatar mx-auto mb-3">
+                    ${avatarHtml}
+                </div>
+                <h5 class="card-title fw-bold mb-2">${student.name}</h5>
+                <p class="text-muted mb-2">
+                    <i class="fas fa-university me-1"></i>
+                    ${student.university}
+                </p>
+                <p class="text-muted mb-3">
+                    <i class="fas fa-graduation-cap me-1"></i>
+                    ${student.major}
+                </p>
+                ${bioHtml}
+                <div class="student-meta">
+                    <small class="text-muted">
+                        <i class="fas fa-calendar me-1"></i>
+                        ${new Date(student.join_date).toLocaleDateString('zh-CN', {year: 'numeric', month: 'long'})} 加入
+                    </small>
+                </div>
+                <div class="student-contact mt-3">
+                    ${emailHtml}
+                    ${phoneHtml}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    return col;
+}
+
+// 学员卡片动画
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '0';
+            entry.target.style.transform = 'translateY(30px)';
+            entry.target.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            
+            setTimeout(() => {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }, 100);
+            
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+
+// 页面加载完成后执行
+document.addEventListener('DOMContentLoaded', function() {
+    // 加载统计数据
+    loadStatistics();
+    
+    // 观察所有学员卡片
+    document.querySelectorAll('.student-card').forEach(card => {
+        observer.observe(card);
+    });
+});
+</script>
+{% endblock %}

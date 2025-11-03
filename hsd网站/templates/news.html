@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}新闻资讯 - QHSF-HSD 校园开发者联盟{% endblock %}
+
+{% block content %}
+<!-- 页面标题 -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-5 fw-bold mb-3">新闻资讯</h1>
+                <p class="lead text-muted">了解最新的技术动态和项目进展</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 新闻分类筛选 -->
+<section class="py-4 border-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex flex-wrap justify-content-center gap-2">
+                    <a href="{{ url_for('news') }}" 
+                       class="btn {% if not current_category %}btn-success{% else %}btn-outline-success{% endif %} btn-sm">
+                        全部新闻
+                    </a>
+                    <a href="{{ url_for('news', category='项目动态') }}" 
+                       class="btn {% if current_category == '项目动态' %}btn-success{% else %}btn-outline-success{% endif %} btn-sm">
+                        项目动态
+                    </a>
+                    <a href="{{ url_for('news', category='技术分享') }}" 
+                       class="btn {% if current_category == '技术分享' %}btn-success{% else %}btn-outline-success{% endif %} btn-sm">
+                        技术分享
+                    </a>
+                    <a href="{{ url_for('news', category='赛事新闻') }}" 
+                       class="btn {% if current_category == '赛事新闻' %}btn-success{% else %}btn-outline-success{% endif %} btn-sm">
+                        赛事新闻
+                    </a>
+                    <a href="{{ url_for('news', category='学员风采') }}" 
+                       class="btn {% if current_category == '学员风采' %}btn-success{% else %}btn-outline-success{% endif %} btn-sm">
+                        学员风采
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 新闻列表 -->
+<section class="py-5">
+    <div class="container">
+        {% if news_list %}
+        <div class="row g-4">
+            {% for news_item in news_list %}
+            <div class="col-lg-6">
+                <article class="card h-100 border-0 shadow-sm news-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="badge bg-success">{{ news_item.category }}</span>
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>
+                                {{ news_item.publish_date.strftime('%Y年%m月%d日') }}
+                            </small>
+                        </div>
+                        
+                        <h5 class="card-title fw-bold mb-3">
+                            <a href="{{ url_for('news_detail', news_id=news_item.id) }}" 
+                               class="text-decoration-none text-dark stretched-link">
+                                {{ news_item.title }}
+                            </a>
+                        </h5>
+                        
+                        <p class="card-text text-muted mb-3">{{ news_item.content[:150] }}...</p>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="author-info">
+                                <small class="text-muted">
+                                    <i class="fas fa-user me-1"></i>
+                                    {{ news_item.author }}
+                                </small>
+                            </div>
+                            <div class="read-more">
+                                <span class="text-primary small fw-bold">
+                                    阅读全文 <i class="fas fa-arrow-right ms-1"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- 分页 -->
+        {% if news_list|length >= 10 %}
+        <nav aria-label="新闻分页" class="mt-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">上一页</a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">2</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">3</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">下一页</a>
+                </li>
+            </ul>
+        </nav>
+        {% endif %}
+        
+        {% else %}
+        <div class="row">
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-newspaper fa-4x text-muted mb-3"></i>
+                <h4 class="text-muted">暂无新闻</h4>
+                <p class="text-muted">{% if current_category %}该分类下暂无新闻{% else %}暂时没有新闻发布{% endif %}</p>
+                {% if current_category %}
+                <a href="{{ url_for('news') }}" class="btn btn-success">查看所有新闻</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- 订阅通知 -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h3 class="fw-bold mb-3">订阅我们的新闻</h3>
+                <p class="lead text-muted mb-4">第一时间获取最新的技术资讯和项目动态</p>
+                <form class="row g-3 justify-content-center" id="subscribeForm" onsubmit="event.preventDefault(); handleNewsSubscription(this);">
+                    <div class="col-md-6">
+                        <input type="email" name="email" class="form-control" placeholder="请输入您的邮箱地址" required>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-bell me-2"></i>订阅
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.news-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+.news-card .stretched-link::after {
+    z-index: 1;
+}
+
+.author-info {
+    position: relative;
+    z-index: 2;
+}
+
+.read-more {
+    position: relative;
+    z-index: 2;
+}
+
+.badge {
+    position: relative;
+    z-index: 2;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// 订阅表单处理
+document.getElementById('subscribeForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = this.querySelector('input[type="email"]').value;
+    
+    // 这里可以添加订阅逻辑
+    alert('订阅成功！我们会将最新资讯发送到您的邮箱。');
+    this.reset();
+});
+</script>
+{% endblock %}

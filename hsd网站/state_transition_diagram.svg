@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="800" height="600" fill="#f8f9fa" />
+  <text x="400" y="30" font-family="Arial" font-size="20" text-anchor="middle" font-weight="bold">学生申请状态转换图</text>
+  
+  <!-- 初始状态 -->
+  <circle cx="400" cy="80" r="15" fill="black" />
+  
+  <!-- 状态：未申请 -->
+  <rect x="350" y="120" width="100" height="50" rx="20" ry="20" fill="#e6f2ff" stroke="#333" stroke-width="2" />
+  <text x="400" y="150" font-family="Arial" font-size="14" text-anchor="middle">未申请</text>
+  
+  <!-- 状态：已申请待审核 -->
+  <rect x="350" y="240" width="100" height="50" rx="20" ry="20" fill="#e6f2ff" stroke="#333" stroke-width="2" />
+  <text x="400" y="270" font-family="Arial" font-size="14" text-anchor="middle">待审核</text>
+  
+  <!-- 状态：已批准 -->
+  <rect x="200" y="360" width="100" height="50" rx="20" ry="20" fill="#e6f2ff" stroke="#333" stroke-width="2" />
+  <text x="250" y="390" font-family="Arial" font-size="14" text-anchor="middle">已批准</text>
+  
+  <!-- 状态：已拒绝 -->
+  <rect x="500" y="360" width="100" height="50" rx="20" ry="20" fill="#e6f2ff" stroke="#333" stroke-width="2" />
+  <text x="550" y="390" font-family="Arial" font-size="14" text-anchor="middle">已拒绝</text>
+  
+  <!-- 状态：已分组 -->
+  <rect x="200" y="480" width="100" height="50" rx="20" ry="20" fill="#e6f2ff" stroke="#333" stroke-width="2" />
+  <text x="250" y="510" font-family="Arial" font-size="14" text-anchor="middle">已分组</text>
+  
+  <!-- 转换：初始 -> 未申请 -->
+  <line x1="400" y1="95" x2="400" y2="120" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)" />
+  <text x="410" y="110" font-family="Arial" font-size="12">系统初始化</text>
+  
+  <!-- 转换：未申请 -> 待审核 -->
+  <line x1="400" y1="170" x2="400" y2="240" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)" />
+  <text x="410" y="210" font-family="Arial" font-size="12">提交申请</text>
+  
+  <!-- 转换：待审核 -> 已批准 -->
+  <line x1="350" y1="265" x2="250" y2="360" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)" />
+  <text x="280" y="310" font-family="Arial" font-size="12">管理员批准</text>
+  
+  <!-- 转换：待审核 -> 已拒绝 -->
+  <line x1="450" y1="265" x2="550" y2="360" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)" />
+  <text x="520" y="310" font-family="Arial" font-size="12">管理员拒绝</text>
+  
+  <!-- 转换：已批准 -> 已分组 -->
+  <line x1="250" y1="410" x2="250" y2="480" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)" />
+  <text x="260" y="450" font-family="Arial" font-size="12">分配小组</text>
+  
+  <!-- 转换：已拒绝 -> 待审核 -->
+  <path d="M 550 360 C 650 300, 650 200, 450 240" stroke="#333" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />
+  <text x="620" y="250" font-family="Arial" font-size="12">重新申请</text>
+  
+  <!-- 转换：已分组 -> 未申请 -->
+  <path d="M 200 505 C 100 505, 100 145, 350 145" stroke="#333" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />
+  <text x="120" y="300" font-family="Arial" font-size="12">删除学生</text>
+  
+  <!-- 箭头定义 -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+    </marker>
+  </defs>
+</svg>

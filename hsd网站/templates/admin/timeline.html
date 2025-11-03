@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时间线管理 - 管理员后台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .card {
+            border: none;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        .table th {
+            border-top: none;
+            font-weight: 600;
+            color: #495057;
+        }
+        .badge {
+            font-size: 0.75em;
+        }
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+        <!-- 统一侧边栏 -->
+        {% include 'admin/sidebar.html' %}
+
+            <!-- 主内容区 -->
+            <main class="main-content p-4">
+                    <!-- 顶部导航 -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="mb-0">时间线管理</h2>
+                        <div class="d-flex gap-2">
+                            <a href="{{ url_for('admin_timeline_create') }}" class="btn btn-primary">
+                                <i class="bi bi-plus-circle me-1"></i>添加时间线事件
+                            </a>
+                            <a href="{{ url_for('admin_logout') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-box-arrow-right me-1"></i>退出登录
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Flash 消息 -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <!-- 主要内容区域 -->
+                    <div class="row">
+                        <!-- 左侧内容 -->
+                        <div class="col-lg-8">
+                            <!-- 时间线事件列表 -->
+                            <div class="card">
+                                <div class="card-header bg-white">
+                                    <h5 class="card-title mb-0">时间线事件列表</h5>
+                                </div>
+                                <div class="card-body p-0">
+                                    {% if timelines.items %}
+                                        <div class="table-responsive">
+                                            <table class="table table-hover mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="8%">排序</th>
+                                                        <th width="12%">时间</th>
+                                                        <th width="20%">标题</th>
+                                                        <th width="25%">描述</th>
+                                                        <th width="10%">标记</th>
+                                                        <th width="10%">状态</th>
+                                                        <th width="15%">操作</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for timeline in timelines.items %}
+                                                        <tr>
+                                                            <td><span class="badge bg-primary">{{ timeline.order_index }}</span></td>
+                                                            <td class="text-muted">{{ timeline.date }}</td>
+                                                            <td class="fw-medium">{{ timeline.title }}</td>
+                                                            <td class="text-muted">{{ timeline.description[:50] }}{% if timeline.description|length > 50 %}...{% endif %}</td>
+                                                            <td>
+                                                                <span class="badge" style="background-color: {{ timeline.marker_color }}">
+                                                                    ●
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                {% if timeline.is_published %}
+                                                                    <span class="badge bg-success">已发布</span>
+                                                                {% else %}
+                                                                    <span class="badge bg-warning">草稿</span>
+                                                                {% endif %}
+                                                            </td>
+                                                            <td>
+                                                                <a href="{{ url_for('admin_timeline_edit', id=timeline.id) }}" class="btn btn-sm btn-outline-primary me-1">
+                                                                    <i class="bi bi-pencil"></i>
+                                                                </a>
+                                                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteTimeline({{ timeline.id }})">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- 分页 -->
+                                        {% if timelines.pages > 1 %}
+                                            <div class="card-footer bg-white">
+                                                <nav aria-label="时间线分页">
+                                                    <ul class="pagination justify-content-center mb-0">
+                                                        {% if timelines.has_prev %}
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="{{ url_for('admin_timeline', page=timelines.prev_num) }}">上一页</a>
+                                                            </li>
+                                                        {% endif %}
+                                                        
+                                                        {% for page_num in timelines.iter_pages() %}
+                                                            {% if page_num %}
+                                                                {% if page_num != timelines.page %}
+                                                                    <li class="page-item">
+                                                                        <a class="page-link" href="{{ url_for('admin_timeline', page=page_num) }}">{{ page_num }}</a>
+                                                                    </li>
+                                                                {% else %}
+                                                                    <li class="page-item active">
+                                                                        <span class="page-link">{{ page_num }}</span>
+                                                                    </li>
+                                                                {% endif %}
+                                                            {% else %}
+                                                                <li class="page-item disabled">
+                                                                    <span class="page-link">...</span>
+                                                                </li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        
+                                                        {% if timelines.has_next %}
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="{{ url_for('admin_timeline', page=timelines.next_num) }}">下一页</a>
+                                                            </li>
+                                                        {% endif %}
+                                                    </ul>
+                                                </nav>
+                                            </div>
+                                        {% endif %}
+                                    {% else %}
+                                        <div class="text-center py-5">
+                                            <i class="bi bi-clock-history" style="font-size: 3rem; color: #dee2e6;"></i>
+                                            <h5 class="text-muted mt-3">暂无时间线事件</h5>
+                                            <p class="text-muted">点击上方按钮添加第一个时间线事件</p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 右侧统计和快捷操作 -->
+                        <div class="col-lg-4">
+                            <!-- 统计卡片 -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-white">
+                                    <h6 class="card-title mb-0">统计信息</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row text-center">
+                                        <div class="col-6">
+                                            <div class="border-end">
+                                                <h4 class="text-primary mb-1">{{ timelines.total if timelines else 0 }}</h4>
+                                                <small class="text-muted">总事件数</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <h4 class="text-success mb-1">{{ timelines.items|selectattr('is_published')|list|length if timelines else 0 }}</h4>
+                                            <small class="text-muted">已发布</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 快捷操作 -->
+                            <div class="card">
+                                <div class="card-header bg-white">
+                                    <h6 class="card-title mb-0">快捷操作</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-grid gap-2">
+                                        <a href="{{ url_for('admin_timeline_create') }}" class="btn btn-primary">
+                                            <i class="bi bi-plus-circle me-2"></i>添加时间线事件
+                                        </a>
+                                        <a href="{{ url_for('about') }}" class="btn btn-outline-secondary" target="_blank">
+                                            <i class="bi bi-eye me-2"></i>预览时间线
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+        </div>
+    </div>
+
+     <!-- 删除确认模态框 -->
+     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <h5 class="modal-title" id="deleteModalLabel">确认删除</h5>
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                 </div>
+                 <div class="modal-body">
+                     确定要删除这个时间线事件吗？此操作不可撤销。
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                     <button type="button" class="btn btn-danger" id="confirmDelete">删除</button>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+     <script>
+         let deleteTimelineId = null;
+         
+         function deleteTimeline(id) {
+             deleteTimelineId = id;
+             const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+             modal.show();
+         }
+         
+         document.getElementById('confirmDelete').addEventListener('click', function() {
+             if (deleteTimelineId) {
+                 // 创建表单并提交
+                 const form = document.createElement('form');
+                 form.method = 'POST';
+                 form.action = `/admin/timeline/delete/${deleteTimelineId}`;
+                 document.body.appendChild(form);
+                 form.submit();
+             }
+         });
+     </script>
+ </body>
+ </html>

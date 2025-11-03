@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>合作伙伴管理 - 管理后台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .main-content {
+            background-color: white;
+            border-radius: 15px;
+            margin: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .top-nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px 15px 0 0;
+        }
+        .content-area {
+            padding: 30px;
+        }
+        .partner-card {
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: white;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .partner-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .partner-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            background-color: #f8f9fa;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+        }
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+        <!-- 统一侧边栏 -->
+        {% include 'admin/sidebar.html' %}
+
+            <!-- 主内容区 -->
+            <main class="main-content">
+                    <!-- 顶部导航 -->
+                    <div class="top-nav">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h2 class="mb-0">合作伙伴管理</h2>
+                                <small style="color: rgba(255,255,255,0.8);">管理和维护合作伙伴信息</small>
+                            </div>
+                            <div>
+                                <a href="{{ url_for('admin_partners_create') }}" class="btn btn-light me-2">
+                                    <i class="bi bi-plus-circle me-2"></i>添加合作伙伴
+                                </a>
+                                <a href="{{ url_for('user_logout') }}" class="btn btn-outline-light">
+                                    <i class="bi bi-box-arrow-right me-2"></i>退出登录
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-area">
+                        <div class="row">
+                            <!-- 左侧合作伙伴列表 -->
+                            <div class="col-lg-8">
+                                <!-- Flash 消息 -->
+                                {% with messages = get_flashed_messages(with_categories=true) %}
+                                    {% if messages %}
+                                        {% for category, message in messages %}
+                                            <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                                                {{ message }}
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endwith %}
+
+                                <!-- 合作伙伴列表 -->
+                                {% if partners.items %}
+                                    <div class="row">
+                                        {% for partner in partners.items %}
+                                            <div class="col-md-6 col-lg-4">
+                                                <div class="partner-card">
+                                                    <div class="partner-logo bg-white">
+                                                        <i class="{{ partner.icon_class }} fa-3x text-{{ partner.icon_color }}"></i>
+                                                    </div>
+                                                    <h5 class="mb-2">{{ partner.name }}</h5>
+                                                    {% if partner.website_url %}
+                                                        <p class="text-muted small mb-2">
+                                                            <i class="bi bi-link-45deg"></i>
+                                                            <a href="{{ partner.website_url }}" target="_blank" class="text-decoration-none">访问官网</a>
+                                                        </p>
+                                                    {% endif %}
+                                                    {% if partner.description %}
+                                                        <p class="text-muted small mb-3">{{ partner.description[:50] }}{% if partner.description|length > 50 %}...{% endif %}</p>
+                                                    {% endif %}
+                                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                                        <small class="text-muted">排序: {{ partner.order_index }}</small>
+                                                        <span class="badge bg-{{ 'success' if partner.is_published else 'warning' }}">
+                                                            {{ '已发布' if partner.is_published else '草稿' }}
+                                                        </span>
+                                                    </div>
+                                                    <div class="btn-group w-100" role="group">
+                                                        <a href="{{ url_for('admin_partners_edit', id=partner.id) }}" class="btn btn-sm btn-outline-primary">
+                                                            <i class="bi bi-pencil"></i> 编辑
+                                                        </a>
+                                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="deletePartner({{ partner.id }})">
+                                                            <i class="bi bi-trash"></i> 删除
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    <!-- 分页 -->
+                                    {% if partners.pages > 1 %}
+                                        <nav aria-label="合作伙伴分页" class="mt-4">
+                                            <ul class="pagination justify-content-center">
+                                                {% if partners.has_prev %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="{{ url_for('admin_partners', page=partners.prev_num) }}">上一页</a>
+                                                    </li>
+                                                {% endif %}
+                                                
+                                                {% for page_num in partners.iter_pages() %}
+                                                    {% if page_num %}
+                                                        {% if page_num != partners.page %}
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="{{ url_for('admin_partners', page=page_num) }}">{{ page_num }}</a>
+                                                            </li>
+                                                        {% else %}
+                                                            <li class="page-item active">
+                                                                <span class="page-link">{{ page_num }}</span>
+                                                            </li>
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <li class="page-item disabled">
+                                                            <span class="page-link">…</span>
+                                                        </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                
+                                                {% if partners.has_next %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="{{ url_for('admin_partners', page=partners.next_num) }}">下一页</a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </nav>
+                                    {% endif %}
+                                {% else %}
+                                    <div class="text-center py-5">
+                                        <i class="bi bi-building" style="font-size: 4rem; color: #dee2e6;"></i>
+                                        <h4 class="mt-3 text-muted">暂无合作伙伴</h4>
+                                        <p class="text-muted">点击上方按钮添加第一个合作伙伴</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- 右侧统计和快捷操作 -->
+                            <div class="col-lg-4">
+                                <!-- 统计卡片 -->
+                                <div class="card mb-4">
+                                    <div class="card-header bg-white">
+                                        <h6 class="card-title mb-0">合作伙伴统计</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row text-center">
+                                            <div class="col-6">
+                                                <div class="border-end">
+                                                    <h4 class="text-primary mb-1">{{ partners.total if partners else 0 }}</h4>
+                                                    <small class="text-muted">总合作伙伴</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <h4 class="text-success mb-1">{{ partners.items|selectattr('is_published')|list|length if partners else 0 }}</h4>
+                                                <small class="text-muted">已发布</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 快捷操作 -->
+                                <div class="card mb-4">
+                                    <div class="card-header bg-white">
+                                        <h6 class="card-title mb-0">快捷操作</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-grid gap-2">
+                                            <a href="{{ url_for('admin_partners_create') }}" class="btn btn-primary">
+                                                <i class="bi bi-plus-circle me-2"></i>添加合作伙伴
+                                            </a>
+                                            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary" target="_blank">
+                                                <i class="bi bi-eye me-2"></i>预览网站
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 最新合作伙伴 -->
+                                <div class="card">
+                                    <div class="card-header bg-white">
+                                        <h6 class="card-title mb-0">最新合作伙伴</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        {% if partners and partners.items %}
+                                            {% for partner in partners.items[:3] %}
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <div class="partner-logo me-3" style="width: 40px; height: 40px;">
+                                                        <i class="{{ partner.icon_class }} fa-lg text-{{ partner.icon_color }}"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="mb-0">{{ partner.name }}</h6>
+                                                        <small class="text-muted">{{ partner.description[:30] if partner.description else '暂无描述' }}{% if partner.description and partner.description|length > 30 %}...{% endif %}</small>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            <p class="text-muted mb-0">暂无合作伙伴</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 删除确认模态框 -->
+     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <h5 class="modal-title" id="deleteModalLabel">确认删除</h5>
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                 </div>
+                 <div class="modal-body">
+                     确定要删除这个合作伙伴吗？此操作无法撤销。
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                     <button type="button" class="btn btn-danger" id="confirmDelete">删除</button>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+     <script>
+         let partnerToDelete = null;
+         
+         function deletePartner(partnerId) {
+             partnerToDelete = partnerId;
+             const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+             deleteModal.show();
+         }
+         
+         document.getElementById('confirmDelete').addEventListener('click', function() {
+             if (partnerToDelete) {
+                 const form = document.createElement('form');
+                 form.method = 'POST';
+                 form.action = `/admin/partners/${partnerToDelete}/delete`;
+                 document.body.appendChild(form);
+                 form.submit();
+             }
+         });
+     </script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block title %}QHSF-HSD 校园开发者联盟 - 首页{% endblock %}
+
+{% block content %}
+<!-- 英雄区域 -->
+<section class="hero-section bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">QHSF-HSD</h1>
+                <h2 class="h3 mb-4">校园开发者联盟</h2>
+                <p class="lead mb-4">
+                    汇聚全国优秀校园开发者，共同探索前沿技术，推动创新发展。
+                    加入我们，开启你的技术成长之旅！
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{{ url_for('join') }}" class="btn btn-light btn-lg px-4">
+                        <i class="fas fa-rocket me-2"></i>立即加入
+                    </a>
+                    <a href="{{ url_for('events') }}" class="btn btn-outline-light btn-lg px-4">
+                        <i class="fas fa-calendar me-2"></i>查看活动
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-image">
+                    <i class="fas fa-users-cog fa-10x opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 特色功能 -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-6 fw-bold mb-3">我们的特色</h2>
+                <p class="lead text-muted">为校园开发者提供全方位的成长支持</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-graduation-cap fa-2x"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">技术培训</h5>
+                        <p class="text-muted">定期举办技术培训活动，涵盖前端、后端、移动开发、AI等热门技术领域。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-success text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-lightbulb fa-2x"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">创新激励</h5>
+                        <p class="text-muted">提供创新项目孵化支持，包括技术指导、资金扶持和导师辅导。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-info text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-users fa-2x"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">社区交流</h5>
+                        <p class="text-muted">构建活跃的开发者社区，促进技术交流与合作，共同成长进步。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 最新活动 -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="display-6 fw-bold mb-3">最新活动</h2>
+                <p class="lead text-muted">参与我们的精彩活动，拓展技术视野</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            {% for event in events %}
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    {% if event.image_url %}
+                    <div class="card-img-top bg-primary d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="fas fa-calendar-alt fa-3x text-white"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-primary">{{ event.category }}</span>
+                            <small class="text-muted">{{ event.event_date.strftime('%Y-%m-%d') }}</small>
+                        </div>
+                        <h5 class="card-title fw-bold">{{ event.title }}</h5>
+                        <p class="card-text text-muted">{{ event.description[:100] }}...</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-map-marker-alt me-1"></i>{{ event.location }}
+                            </small>
+                            <a href="{{ url_for('event_detail', event_id=event.id) }}" class="btn btn-outline-primary btn-sm">了解详情</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('events') }}" class="btn btn-primary btn-lg">
+                查看更多活动 <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- 最新资讯 -->
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="display-6 fw-bold mb-3">最新资讯</h2>
+                <p class="lead text-muted">了解最新的技术动态和项目进展</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            {% for news_item in news %}
+            <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-success">{{ news_item.category }}</span>
+                            <small class="text-muted">{{ news_item.publish_date.strftime('%Y-%m-%d') }}</small>
+                        </div>
+                        <h5 class="card-title fw-bold">
+                            <a href="{{ url_for('news_detail', news_id=news_item.id) }}" class="text-decoration-none text-dark">
+                                {{ news_item.title }}
+                            </a>
+                        </h5>
+                        <p class="card-text text-muted">{{ news_item.content[:120] }}...</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-user me-1"></i>{{ news_item.author }}
+                            </small>
+                            <a href="{{ url_for('news_detail', news_id=news_item.id) }}" class="btn btn-outline-success btn-sm">阅读全文</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('news') }}" class="btn btn-success btn-lg">
+                查看更多资讯 <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- 数据统计 -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <h3 class="display-4 fw-bold mb-2">500+</h3>
+                    <p class="lead mb-0">注册学生</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <h3 class="display-4 fw-bold mb-2">50+</h3>
+                    <p class="lead mb-0">合作高校</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <h3 class="display-4 fw-bold mb-2">100+</h3>
+                    <p class="lead mb-0">举办活动</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="stat-item">
+                    <h3 class="display-4 fw-bold mb-2">20+</h3>
+                    <p class="lead mb-0">创新项目</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 行动号召 -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="display-6 fw-bold mb-4">准备好开始你的技术之旅了吗？</h2>
+                <p class="lead text-muted mb-4">加入QHSF-HSD，与全国优秀开发者一起成长</p>
+                <a href="{{ url_for('join') }}" class="btn btn-primary btn-lg px-5">
+                    <i class="fas fa-rocket me-2"></i>立即加入我们
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

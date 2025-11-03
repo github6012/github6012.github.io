@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+  <!-- 样式定义 -->
+  <defs>
+    <style>
+      .entity {
+        fill: #e1f5fe;
+        stroke: #0288d1;
+        stroke-width: 2;
+        rx: 5;
+        ry: 5;
+      }
+      .entity-title {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        text-anchor: middle;
+      }
+      .entity-attribute {
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        text-anchor: start;
+      }
+      .pk {
+        font-weight: bold;
+        text-decoration: underline;
+      }
+      .relationship-text {
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        font-style: italic;
+        text-anchor: middle;
+        fill: #d32f2f;
+      }
+      .connector {
+        stroke: #757575;
+        stroke-width: 1.5;
+        fill: none;
+      }
+      .cardinality {
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        text-anchor: middle;
+        fill: #1a237e;
+      }
+    </style>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  
+  <!-- 标题 -->
+  <text x="600" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle">QHSF-HSD 校园开发者社区管理系统 ER图</text>
+  
+  <!-- 实体: Admin -->
+  <rect class="entity" x="520" y="80" width="160" height="80"/>
+  <text class="entity-title" x="600" y="105">Admin</text>
+  <line x1="520" y1="115" x2="680" y2="115" stroke="#0288d1" stroke-width="1"/>
+  <text class="entity-attribute pk" x="530" y="135">id: Integer</text>
+  <text class="entity-attribute" x="530" y="150">username: String</text>
+  
+  <!-- 实体: Event -->
+  <rect class="entity" x="120" y="240" width="160" height="120"/>
+  <text class="entity-title" x="200" y="265">Event</text>
+  <line x1="120" y1="275" x2="280" y2="275" stroke="#0288d1" stroke-width="1"/>
+  <text class="entity-attribute pk" x="130" y="295">id: Integer</text>
+  <text class="entity-attribute" x="130" y="310">title: String</text>
+  <text class="entity-attribute" x="130" y="325">content: Text</text>
+  <text class="entity-attribute" x="130" y="340">date: DateTime</text>
+  
+  <!-- 实体: News -->
+  <rect class="entity" x="120" y="480" width="160" height="120"/>
+  <text class="entity-title" x="200" y="505">News</text>
+  <line x1="120" y1="515" x2="280" y2="515" stroke="#0288d1" stroke-width="1"/>
+  <text class="entity-attribute pk" x="130" y="535">id: Integer</text>
+  <text class="entity-attribute" x="130" y="550">title: String</text>
+  <text class="entity-attribute" x="130" y="565">content: Text</text>
+  <text class="entity-attribute" x="130" y="580">date: DateTime</text>
+  
+  <!-- 实体: Student -->
+  <rect class="entity" x="360" y="240" width="160" height="140"/>
+  <text class="entity-title" x="440" y="265">Student</text>
+  <line x1="360" y1="275" x2="520" y2="275" stroke="#0288d1" stroke-width="1"/>
+  <text class="entity-attribute pk" x="370" y="295">id: Integer</text>
+  <text class="entity-attribute" x="370" y="310">name: String</text>
+  <text class="entity-attribute" x="370" y="325">email: String</text>
+  <text class="entity-attribute" x="370" y="340">group: String</text>
+  <text class="entity-attribute" x="370" y="355">status: String</text>
+  <text class="entity-attribute" x="370" y="370">join_date: DateTime</text>
+  
+  <!-- 实体: Timeline -->
+  <rect class="entity" x="360" y="480" width="160" height="100"/>
+  <text class="entity-title" x="440" y="505">Timeline</text>
+  <line x1="360" y1="515" x2="520" y2="515" stroke="#0288d1" stroke-width="1"/>
+  <text class="entity-attribute pk" x="370" y="535">id: Integer</text>
+  <text class="entity-attribute" x="370" y="550">title: String</text>
+  <text class="entity-attribute" x="370" y="565">date: DateTime</text>
+  
+  <!-- 实体: Team -->
+  <rect class="entity" x="600" y="240" width="160" height="120"/>
+  <text class="entity-title" x="680" y="265">Team</text>
+  <line x1="600" y1="275" x2="760" y2="275" stroke="#0288d1" stroke-width="1"/>
+  <text class="entity-attribute pk" x="610" y="295">id: Integer</text>
+  <text class="entity-attribute" x="610" y="310">name: String</text>
+  <text class="entity-attribute" x="610" y="325">role: String</text>
+  <text class="entity-attribute" x="610" y="340">description: Text</text>
+  
+  <!-- 实体: Partner -->
+  <rect class="entity" x="600" y="480" width="160" height="100"/>
+  <text class="entity-title" x="680" y="505">Partner</text>
+  <line x1="600" y1="515" x2="760" y2="515" stroke="#0288d1" stroke-width="1"/>
+  <text class="entity-attribute pk" x="610" y="535">id: Integer</text>
+  <text class="entity-attribute" x="610" y="550">name: String</text>
+  <text class="entity-attribute" x="610" y="565">logo: String</text>
+  
+  <!-- 实体: ContactInfo -->
+  <rect class="entity" x="840" y="240" width="160" height="120"/>
+  <text class="entity-title" x="920" y="265">ContactInfo</text>
+  <line x1="840" y1="275" x2="1000" y2="275" stroke="#0288d1" stroke-width="1"/>
+  <text class="entity-attribute pk" x="850" y="295">id: Integer</text>
+  <text class="entity-attribute" x="850" y="310">address: String</text>
+  <text class="entity-attribute" x="850" y="325">email: String</text>
+  <text class="entity-attribute" x="850" y="340">phone: String</text>
+  
+  <!-- 实体: ContactMessage -->
+  <rect class="entity" x="840" y="480" width="160" height="120"/>
+  <text class="entity-title" x="920" y="505">ContactMessage</text>
+  <line x1="840" y1="515" x2="1000" y2="515" stroke="#0288d1" stroke-width="1"/>
+  <text class="entity-attribute pk" x="850" y="535">id: Integer</text>
+  <text class="entity-attribute" x="850" y="550">name: String</text>
+  <text class="entity-attribute" x="850" y="565">email: String</text>
+  <text class="entity-attribute" x="850" y="580">message: Text</text>
+  
+  <!-- 关系连接线 -->
+  <!-- Admin - Event -->
+  <path class="connector" d="M 520,120 L 200,120 L 200,240"/>
+  <text class="cardinality" x="500" y="120">1</text>
+  <text class="cardinality" x="210" y="230">N</text>
+  <text class="relationship-text" x="350" y="100">管理</text>
+  
+  <!-- Admin - News -->
+  <path class="connector" d="M 520,140 L 100,140 L 100,540 L 120,540"/>
+  <text class="cardinality" x="500" y="140">1</text>
+  <text class="cardinality" x="130" y="530">N</text>
+  <text class="relationship-text" x="80" y="340">管理</text>
+  
+  <!-- Admin - Student -->
+  <path class="connector" d="M 600,160 L 600,200 L 440,200 L 440,240"/>
+  <text class="cardinality" x="590" y="180">1</text>
+  <text class="cardinality" x="450" y="230">N</text>
+  <text class="relationship-text" x="520" y="190">管理</text>
+  
+  <!-- Admin - Timeline -->
+  <path class="connector" d="M 580,160 L 580,400 L 440,400 L 440,480"/>
+  <text class="cardinality" x="570" y="180">1</text>
+  <text class="cardinality" x="450" y="470">N</text>
+  <text class="relationship-text" x="510" y="390">管理</text>
+  
+  <!-- Admin - Team -->
+  <path class="connector" d="M 620,160 L 620,200 L 680,200 L 680,240"/>
+  <text class="cardinality" x="610" y="180">1</text>
+  <text class="cardinality" x="690" y="230">N</text>
+  <text class="relationship-text" x="660" y="190">管理</text>
+  
+  <!-- Admin - Partner -->
+  <path class="connector" d="M 640,160 L 640,400 L 680,400 L 680,480"/>
+  <text class="cardinality" x="630" y="180">1</text>
+  <text class="cardinality" x="690" y="470">N</text>
+  <text class="relationship-text" x="670" y="390">管理</text>
+  
+  <!-- Admin - ContactInfo -->
+  <path class="connector" d="M 680,120 L 920,120 L 920,240"/>
+  <text class="cardinality" x="700" y="120">1</text>
+  <text class="cardinality" x="930" y="230">N</text>
+  <text class="relationship-text" x="800" y="100">管理</text>
+  
+  <!-- Admin - ContactMessage -->
+  <path class="connector" d="M 680,140 L 1020,140 L 1020,540 L 1000,540"/>
+  <text class="cardinality" x="700" y="140">1</text>
+  <text class="cardinality" x="990" y="530">N</text>
+  <text class="relationship-text" x="1040" y="340">查看</text>
+</svg>

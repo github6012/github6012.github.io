@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>申请审核 - 管理后台</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        
+        /* 审核操作按钮样式 */
+        .btn-approve {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+        }
+        .btn-approve:hover {
+            background: linear-gradient(45deg, #218838, #1ea085);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+            color: white;
+        }
+        
+        .btn-reject {
+            background: linear-gradient(45deg, #dc3545, #e74c3c);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+        }
+        .btn-reject:hover {
+            background: linear-gradient(45deg, #c82333, #dc2626);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
+            color: white;
+        }
+        
+        /* 申请卡片样式 */
+        .application-row {
+            transition: all 0.3s ease;
+        }
+        .application-row:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* 统计卡片增强 */
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .stats-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* 操作列样式 */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* 申请状态指示器 */
+        .pending-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #ffc107;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+        <!-- 统一侧边栏 -->
+        {% include 'admin/sidebar.html' %}
+
+            <!-- 主要内容 -->
+            <main class="main-content fade-in-up">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div>
+                        <h1 class="h2 mb-1 page-title">
+                            <i class="bi bi-person-check text-primary me-2"></i>
+                            申请审核中心
+                        </h1>
+                        <p class="text-muted mb-0">审核新的学生申请，决定是否批准加入</p>
+                    </div>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-funnel me-1"></i>筛选
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-download me-1"></i>导出
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 统计卡片 -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card stats-card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="card-title mb-1">
+                                            <span class="pending-indicator"></span>
+                                            {{ students.total }}
+                                        </h4>
+                                        <p class="card-text mb-0">待审核申请</p>
+                                        <small class="opacity-75">需要您的审核决定</small>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="bi bi-person-clock" style="font-size: 3rem; opacity: 0.75;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stats-card border-success">
+                            <div class="card-body text-success">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="card-title text-success">快速审核</h4>
+                                        <p class="card-text">批量操作</p>
+                                        <small class="text-muted">提高审核效率</small>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="bi bi-check2-all" style="font-size: 2rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 申请列表 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">待审核申请列表</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if students.items %}
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>头像</th>
+                                            <th>姓名</th>
+                                            <th>学校</th>
+                                            <th>专业</th>
+                                            <th>年级</th>
+                                            <th>联系方式</th>
+                                            <th>申请时间</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for student in students.items %}
+                                            <tr class="application-row">
+                                                <td>{{ student.id }}</td>
+                                                <td>
+                                                    <img src="{{ student.avatar_url or '/static/images/avatar-default.svg' }}" 
+                                                         alt="{{ student.name }}" class="avatar">
+                                                </td>
+                                                <td><strong>{{ student.name }}</strong></td>
+                                                <td>{{ student.university }}</td>
+                                                <td>{{ student.major }}</td>
+                                                <td>{{ student.grade }}</td>
+                                                <td>
+                                                    <div>{{ student.email }}</div>
+                                                    <small class="text-muted">{{ student.phone }}</small>
+                                                </td>
+                                                <td>{{ student.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                                <td>
+                                                    <div class="action-buttons">
+                                                        <form method="POST" action="{{ url_for('admin_students_approve', id=student.id) }}" class="d-inline">
+                                                            <button type="submit" class="btn btn-approve btn-sm" title="批准申请">
+                                                                <i class="bi bi-check me-1"></i>批准
+                                                            </button>
+                                                        </form>
+                                                        <form method="POST" action="{{ url_for('admin_students_reject', id=student.id) }}" class="d-inline">
+                                                            <button type="submit" class="btn btn-reject btn-sm" title="拒绝申请">
+                                                                <i class="bi bi-x me-1"></i>拒绝
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- 分页 -->
+                            {% if students.pages > 1 %}
+                                <nav aria-label="申请分页">
+                                    <ul class="pagination justify-content-center">
+                                        {% if students.has_prev %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ url_for('admin_applications', page=students.prev_num) }}">上一页</a>
+                                            </li>
+                                        {% endif %}
+                                        
+                                        {% for page_num in students.iter_pages() %}
+                                            {% if page_num %}
+                                                {% if page_num != students.page %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="{{ url_for('admin_applications', page=page_num) }}">{{ page_num }}</a>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="page-item active">
+                                                        <span class="page-link">{{ page_num }}</span>
+                                                    </li>
+                                                {% endif %}
+                                            {% else %}
+                                                <li class="page-item disabled">
+                                                    <span class="page-link">…</span>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                        
+                                        {% if students.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ url_for('admin_applications', page=students.next_num) }}">下一页</a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            {% endif %}
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="bi bi-person-check text-muted mb-3" style="font-size: 3rem;"></i>
+                                <h5 class="text-muted">暂无待审核申请</h5>
+                                <p class="text-muted">当有新的学生申请时，会在这里显示</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

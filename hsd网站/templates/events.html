@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}活动 - QHSF-HSD 校园开发者联盟{% endblock %}
+
+{% block content %}
+<!-- 页面标题 -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-5 fw-bold mb-3">精彩活动</h1>
+                <p class="lead text-muted">参与我们的活动，拓展技术视野，结识志同道合的伙伴</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 活动分类筛选 -->
+<section class="py-4 border-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex flex-wrap justify-content-center gap-2">
+                    <a href="{{ url_for('events') }}" 
+                       class="btn {% if not current_category %}btn-primary{% else %}btn-outline-primary{% endif %} btn-sm">
+                        全部活动
+                    </a>
+                    <a href="{{ url_for('events', category='开发者大会') }}" 
+                       class="btn {% if current_category == '开发者大会' %}btn-primary{% else %}btn-outline-primary{% endif %} btn-sm">
+                        开发者大会
+                    </a>
+                    <a href="{{ url_for('events', category='技术培训') }}" 
+                       class="btn {% if current_category == '技术培训' %}btn-primary{% else %}btn-outline-primary{% endif %} btn-sm">
+                        技术培训
+                    </a>
+                    <a href="{{ url_for('events', category='创新激励') }}" 
+                       class="btn {% if current_category == '创新激励' %}btn-primary{% else %}btn-outline-primary{% endif %} btn-sm">
+                        创新激励
+                    </a>
+                    <a href="{{ url_for('events', category='校园行') }}" 
+                       class="btn {% if current_category == '校园行' %}btn-primary{% else %}btn-outline-primary{% endif %} btn-sm">
+                        校园行
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 活动列表 -->
+<section class="py-5">
+    <div class="container">
+        {% if events %}
+        <div class="row g-4">
+            {% for event in events %}
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm event-card">
+                    <div class="card-img-top bg-gradient-primary d-flex align-items-center justify-content-center text-white" style="height: 200px;">
+                        <div class="text-center">
+                            <i class="fas fa-calendar-alt fa-3x mb-2"></i>
+                            <div class="fw-bold">{{ event.event_date.strftime('%m月%d日') }}</div>
+                            <div class="small">{{ event.event_date.strftime('%Y年') }}</div>
+                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-primary">{{ event.category }}</span>
+                            <small class="text-muted">{{ event.event_date.strftime('%Y-%m-%d') }}</small>
+                        </div>
+                        <h5 class="card-title fw-bold mb-3">{{ event.title }}</h5>
+                        <p class="card-text text-muted flex-grow-1">{{ event.description }}</p>
+                        <div class="mt-auto">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                                <span class="text-muted">{{ event.location }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="event-status">
+                                    {% set now = moment() if moment else None %}
+                                    {% if now and event.event_date > now %}
+                                        <span class="badge bg-success">即将开始</span>
+                                    {% elif now %}
+                                        <span class="badge bg-secondary">已结束</span>
+                                    {% else %}
+                                        <span class="badge bg-info">状态未知</span>
+                                    {% endif %}
+                                </div>
+                                <a href="{{ url_for('event_detail', event_id=event.id) }}" class="btn btn-primary btn-sm">
+                                    了解详情 <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-calendar-times fa-4x text-muted mb-3"></i>
+                <h4 class="text-muted">暂无活动</h4>
+                <p class="text-muted">{% if current_category %}该分类下暂无活动{% else %}暂时没有活动安排{% endif %}</p>
+                {% if current_category %}
+                <a href="{{ url_for('events') }}" class="btn btn-primary">查看所有活动</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- 活动报名提示 -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3 class="fw-bold mb-3">想要参与我们的活动？</h3>
+                <p class="lead text-muted mb-4">加入QHSF-HSD，第一时间获取活动通知</p>
+                <a href="{{ url_for('join') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus me-2"></i>立即加入
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.event-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+</style>
+{% endblock %}

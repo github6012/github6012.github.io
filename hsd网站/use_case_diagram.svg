@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="800" height="600" fill="#f8f9fa" />
+  
+  <!-- 系统边界 -->
+  <rect x="150" y="50" width="500" height="500" rx="10" ry="10" fill="white" stroke="#333" stroke-width="2" />
+  <text x="400" y="80" font-family="Arial" font-size="18" text-anchor="middle" font-weight="bold">QHSF-HSD校园开发者社区系统</text>
+  
+  <!-- 角色 -->
+  <!-- 管理员 -->
+  <circle cx="80" cy="200" r="20" fill="white" stroke="#333" stroke-width="2" />
+  <line x1="80" y1="220" x2="80" y2="270" stroke="#333" stroke-width="2" />
+  <line x1="60" y1="240" x2="100" y2="240" stroke="#333" stroke-width="2" />
+  <line x1="80" y1="270" x2="60" y2="300" stroke="#333" stroke-width="2" />
+  <line x1="80" y1="270" x2="100" y2="300" stroke="#333" stroke-width="2" />
+  <text x="80" y="330" font-family="Arial" font-size="14" text-anchor="middle">管理员</text>
+  
+  <!-- 学生用户 -->
+  <circle cx="80" cy="400" r="20" fill="white" stroke="#333" stroke-width="2" />
+  <line x1="80" y1="420" x2="80" y2="470" stroke="#333" stroke-width="2" />
+  <line x1="60" y1="440" x2="100" y2="440" stroke="#333" stroke-width="2" />
+  <line x1="80" y1="470" x2="60" y2="500" stroke="#333" stroke-width="2" />
+  <line x1="80" y1="470" x2="100" y2="500" stroke="#333" stroke-width="2" />
+  <text x="80" y="530" font-family="Arial" font-size="14" text-anchor="middle">学生用户</text>
+  
+  <!-- 访客 -->
+  <circle cx="720" cy="300" r="20" fill="white" stroke="#333" stroke-width="2" />
+  <line x1="720" y1="320" x2="720" y2="370" stroke="#333" stroke-width="2" />
+  <line x1="700" y1="340" x2="740" y2="340" stroke="#333" stroke-width="2" />
+  <line x1="720" y1="370" x2="700" y2="400" stroke="#333" stroke-width="2" />
+  <line x1="720" y1="370" x2="740" y2="400" stroke="#333" stroke-width="2" />
+  <text x="720" y="430" font-family="Arial" font-size="14" text-anchor="middle">访客</text>
+  
+  <!-- 用例 -->
+  <!-- 管理员用例 -->
+  <ellipse cx="300" cy="120" rx="80" ry="25" fill="white" stroke="#333" stroke-width="2" />
+  <text x="300" y="125" font-family="Arial" font-size="12" text-anchor="middle">管理员登录</text>
+  
+  <ellipse cx="300" cy="180" rx="80" ry="25" fill="white" stroke="#333" stroke-width="2" />
+  <text x="300" y="185" font-family="Arial" font-size="12" text-anchor="middle">管理活动</text>
+  
+  <ellipse cx="300" cy="240" rx="80" ry="25" fill="white" stroke="#333" stroke-width="2" />
+  <text x="300" y="245" font-family="Arial" font-size="12" text-anchor="middle">管理新闻</text>
+  
+  <ellipse cx="300" cy="300" rx="80" ry="25" fill="white" stroke="#333" stroke-width="2" />
+  <text x="300" y="305" font-family="Arial" font-size="12" text-anchor="middle">管理学生</text>
+  
+  <ellipse cx="300" cy="360" rx="80" ry="25" fill="white" stroke="#333" stroke-width="2" />
+  <text x="300" y="365" font-family="Arial" font-size="12" text-anchor="middle">查看统计数据</text>
+  
+  <ellipse cx="300" cy="420" rx="80" ry="25" fill="white" stroke="#333" stroke-width="2" />
+  <text x="300" y="425" font-family="Arial" font-size="12" text-anchor="middle">管理联系信息</text>
+  
+  <ellipse cx="300" cy="480" rx="80" ry="25" fill="white" stroke="#333" stroke-width="2" />
+  <text x="300" y="485" font-family="Arial" font-size="12" text-anchor="middle">导出学生数据</text>
+  
+  <!-- 学生用例 -->
+  <ellipse cx="500" cy="180" rx="80" ry="25" fill="white" stroke="#333" stroke-width="2" />
+  <text x="500" y="185" font-family="Arial" font-size="12" text-anchor="middle">浏览活动</text>
+  
+  <ellipse cx="500" cy="240" rx="80" ry="25" fill="white" stroke="#333" stroke-width="2" />
+  <text x="500" y="245" font-family="Arial" font-size="12" text-anchor="middle">浏览新闻</text>
+  
+  <ellipse cx="500" cy="300" rx="80" ry="25" fill="white" stroke="#333" stroke-width="2" />
+  <text x="500" y="305" font-family="Arial" font-size="12" text-anchor="middle">申请加入</text>
+  
+  <ellipse cx="500" cy="360" rx="80" ry="25" fill="white" stroke="#333" stroke-width="2" />
+  <text x="500" y="365" font-family="Arial" font-size="12" text-anchor="middle">提交联系表单</text>
+  
+  <ellipse cx="500" cy="420" rx="80" ry="25" fill="white" stroke="#333" stroke-width="2" />
+  <text x="500" y="425" font-family="Arial" font-size="12" text-anchor="middle">查看关于页面</text>
+  
+  <!-- 连接线 -->
+  <!-- 管理员连接 -->
+  <line x1="100" y1="200" x2="220" y2="120" stroke="#333" stroke-width="1" />
+  <line x1="100" y1="200" x2="220" y2="180" stroke="#333" stroke-width="1" />
+  <line x1="100" y1="200" x2="220" y2="240" stroke="#333" stroke-width="1" />
+  <line x1="100" y1="200" x2="220" y2="300" stroke="#333" stroke-width="1" />
+  <line x1="100" y1="200" x2="220" y2="360" stroke="#333" stroke-width="1" />
+  <line x1="100" y1="200" x2="220" y2="420" stroke="#333" stroke-width="1" />
+  <line x1="100" y1="200" x2="220" y2="480" stroke="#333" stroke-width="1" />
+  
+  <!-- 学生连接 -->
+  <line x1="100" y1="400" x2="420" y2="180" stroke="#333" stroke-width="1" />
+  <line x1="100" y1="400" x2="420" y2="240" stroke="#333" stroke-width="1" />
+  <line x1="100" y1="400" x2="420" y2="300" stroke="#333" stroke-width="1" />
+  <line x1="100" y1="400" x2="420" y2="360" stroke="#333" stroke-width="1" />
+  <line x1="100" y1="400" x2="420" y2="420" stroke="#333" stroke-width="1" />
+  
+  <!-- 访客连接 -->
+  <line x1="700" y1="300" x2="580" y2="180" stroke="#333" stroke-width="1" />
+  <line x1="700" y1="300" x2="580" y2="240" stroke="#333" stroke-width="1" />
+  <line x1="700" y1="300" x2="580" y2="300" stroke="#333" stroke-width="1" />
+  <line x1="700" y1="300" x2="580" y2="360" stroke="#333" stroke-width="1" />
+  <line x1="700" y1="300" x2="580" y2="420" stroke="#333" stroke-width="1" />
+</svg>

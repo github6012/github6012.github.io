@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+
+{% block title %}加入我们 - QHSF-HSD 校园开发者联盟{% endblock %}
+
+{% block content %}
+<!-- 页面标题 -->
+<section class="py-5 bg-gradient-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-5 fw-bold mb-3">加入我们</h1>
+                <p class="lead">成为QHSF-HSD的一员，开启你的技术成长之旅</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 加入理由 -->
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="display-6 fw-bold mb-4">为什么选择我们？</h2>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="feature-icon bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-chalkboard-teacher fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">专业指导</h5>
+                    <p class="text-muted">资深技术专家提供一对一指导，帮助你快速提升技术能力。</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="feature-icon bg-success text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-project-diagram fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">实战项目</h5>
+                    <p class="text-muted">参与真实项目开发，积累宝贵的实战经验和作品集。</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="feature-icon bg-info text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-network-wired fa-2x"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">人脉网络</h5>
+                    <p class="text-muted">结识来自全国各地的优秀开发者，建立强大的人脉网络。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 申请表单 -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-5">
+                        <h3 class="text-center fw-bold mb-4">申请加入</h3>
+                        <form id="joinForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label fw-bold">姓名 <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label fw-bold">邮箱 <span class="text-danger">*</span></label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="university" class="form-label fw-bold">学校 <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="university" name="university" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="major" class="form-label fw-bold">专业 <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="major" name="major" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="password" class="form-label fw-bold">密码 <span class="text-danger">*</span></label>
+                                    <input type="password" class="form-control" id="password" name="password" required minlength="6" placeholder="至少6位字符">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="confirm_password" class="form-label fw-bold">确认密码 <span class="text-danger">*</span></label>
+                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" required minlength="6" placeholder="请再次输入密码">
+                                </div>
+                                <div class="col-12">
+                                    <label for="phone" class="form-label fw-bold">联系电话</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone">
+                                </div>
+                                <div class="col-12">
+                                    <label for="bio" class="form-label fw-bold">个人简介</label>
+                                    <textarea class="form-control" id="bio" name="bio" rows="4" placeholder="请简单介绍一下自己，包括技术背景、兴趣方向等..."></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="agreement" required>
+                                        <label class="form-check-label" for="agreement">
+                                            我同意 <a href="#" class="text-primary">服务条款</a> 和 <a href="#" class="text-primary">隐私政策</a>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                                        <i class="fas fa-paper-plane me-2"></i>提交申请
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 申请流程 -->
+<section class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="display-6 fw-bold mb-4">申请流程</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 text-center mb-4">
+                <div class="process-step">
+                    <div class="step-number bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <span class="fw-bold">1</span>
+                    </div>
+                    <h6 class="fw-bold">填写申请</h6>
+                    <p class="text-muted small">完整填写申请表单</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center mb-4">
+                <div class="process-step">
+                    <div class="step-number bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <span class="fw-bold">2</span>
+                    </div>
+                    <h6 class="fw-bold">审核评估</h6>
+                    <p class="text-muted small">我们会仔细审核你的申请</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center mb-4">
+                <div class="process-step">
+                    <div class="step-number bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <span class="fw-bold">3</span>
+                    </div>
+                    <h6 class="fw-bold">面试交流</h6>
+                    <p class="text-muted small">通过线上面试了解你</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center mb-4">
+                <div class="process-step">
+                    <div class="step-number bg-success text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <span class="fw-bold">4</span>
+                    </div>
+                    <h6 class="fw-bold">正式加入</h6>
+                    <p class="text-muted small">欢迎成为我们的一员</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 常见问题 -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="display-6 fw-bold mb-4">常见问题</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                                申请需要什么条件？
+                            </button>
+                        </h2>
+                        <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                我们欢迎所有对技术有热情的在校学生申请，不限专业和年级。重要的是你对技术的兴趣和学习的积极性。
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                                加入后有什么福利？
+                            </button>
+                        </h2>
+                        <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                成员可以免费参加所有技术培训、获得项目实战机会、享受导师指导、参与创新激励计划等多项福利。
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                                审核需要多长时间？
+                            </button>
+                        </h2>
+                        <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                通常在提交申请后的3-5个工作日内完成初审，面试安排会在初审通过后的一周内进行。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.process-step {
+    position: relative;
+}
+
+.process-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 30px;
+    right: -50%;
+    width: 100%;
+    height: 2px;
+    background: #dee2e6;
+    z-index: -1;
+}
+
+@media (max-width: 768px) {
+    .process-step:not(:last-child)::after {
+        display: none;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('joinForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+    
+    // 验证密码
+    if (data.password !== data.confirm_password) {
+        alert('两次输入的密码不一致，请重新输入。');
+        return;
+    }
+    
+    if (data.password.length < 6) {
+        alert('密码长度至少为6位字符。');
+        return;
+    }
+    
+    // 移除确认密码字段，不发送到服务器
+    delete data.confirm_password;
+    
+    try {
+        const response = await fetch('/api/join', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            alert('申请提交成功！我们会尽快与您联系。');
+            this.reset();
+        } else {
+            alert('提交失败：' + result.message);
+        }
+    } catch (error) {
+        alert('提交失败，请重试。');
+    }
+});
+</script>
+{% endblock %}
